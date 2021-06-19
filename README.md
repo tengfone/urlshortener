@@ -6,7 +6,7 @@
 ## Table of Contents
 * [Prerequisites](#Prerequisites)
 * [Description](#Description)
-* [System Design](#systemdesign)
+* [System Design](#system-design)
 * [Setup](#Setup)
   + [FrontEnd](#frontend)
   + [BackEnd](#backend)
@@ -58,7 +58,7 @@ Then you can ```npm run start``` to start the frontend server.
 ### Backend
 Either on local or cloud
 ```
-https://github.com/tengfone/urlshortener_be
+git clone https://github.com/tengfone/urlshortener_be
 cd urlshortener_be
 npm install
 ```
@@ -84,7 +84,8 @@ TimeExpire timestamp NOT NULL
 );
 ```
 ## Preview
-Screenshots here
+
+Update when CSS is final
 
 ## FrontEnd
 The front end is written using ReactJS [here](https://github.com/tengfone/urlshortener) and certain libraries which can be found [here](https://github.com/tengfone/urlshortener/blob/main/package.json). 
@@ -130,6 +131,10 @@ The reason behind this structure is first of all there are a couple of factors t
 For the Primary Key (ShortURL), if a user does not specify an alias, it will generate a random 8 character ShortURL using B62 encoding. A-Z,a-z,0-9. I have also capped the user input for the ShortURL to 10 characters max. The LongURL has a maximum of 2048 character as that is the maximum characters a URL can have. 
 
 ## Testcase
-Help
+
+todo
+
 ## Summary
-Everything when I do a project, I will learn something. For this assignment, something new I took back was the SSL issues with both front end and backend. For the front end, if the application is not running on a HTTPS server, you are not allowed to use the inbuild Javascript functions like copying to clipboard and you cannot call an API request whist the certificate is not valid. On the backend, you can manually self-sign the certificate but it seems like majority of the browser are able to detect that and prevent any connection to your backend server. 
+Something new I took back was the SSL issues with both front end and backend. For the front end, if the application is not running on a HTTPS server, you are not allowed to use the inbuild Javascript functions like copying to clipboard and you cannot call an API request whist the certificate is not valid. On the backend, you can manually self-sign the certificate but it seems like majority of the browser are able to detect that and prevent any connection to your backend server. 
+
+Features that can be improved on but not implemented. The MySQL have a field known as TimeExpire that expires 30 days after the URL has been created. A script can be written or even done on the client side when searching for the ShortURL slug. 
