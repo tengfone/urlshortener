@@ -15,3 +15,5 @@ TimeExpire [int(11)]
 CREATE TABLE IF NOT EXISTS `url` (ShortURL varchar(255) NOT NULL PRIMARY KEY,LongURL varchar(2048) NOT NULL,TimeCreated int(11) NOT NULL,TimeExpire int(11) NOT NULL);
 
 .env:REACT_APP_URL_API=xxxxx
+
+Test
