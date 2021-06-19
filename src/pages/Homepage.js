@@ -5,17 +5,22 @@ import moment from 'moment';
 import './Homepage.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+const https = require('https');
 
 function Homepage() {
     const [form, setForm] = useState({ LongURL: '', ShortURL: '' })
     const [errors, setErrors] = useState({})
     const [toDB, setToDB] = useState({})
     const [returnData, setReturnData] = useState({ statusCode: 0, shortedURL: '', errorMessage: '' })
-    
+
     // API
     const url = process.env.REACT_APP_URL_API
+    const agent = new https.Agent({
+        rejectUnauthorized: false
+    });
     const postURL = () => {
         axios.post(`${url}url`, toDB, {
+            agent: agent,
             headers: {
                 'Content-Type': 'application/json'
             }
