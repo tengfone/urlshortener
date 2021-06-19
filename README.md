@@ -40,7 +40,7 @@ The reason why I wanted to use Heroku and Vercel was because they provide a nice
 
 However after much struggle due to time constraints, I have decided to serve this entire assignment on a single AWS EC2 small Ubuntu 20.x. The SQL server will be listening on port 3306, the front end will be running via NGINX port 80 and the backend API server will be on port 3001. 
 
-<img src="./screenshots/archdesign.jpg" width="400" height="400">
+<img src="./screenshots/archdesign.jpg" width="700" height="400">
 
 ## Setup
 ### Frontend 
@@ -126,6 +126,8 @@ Using a relational database, I have chosen MySQL as I am alittle more familiar w
 - Created Time: 4 Bytes (timestamp)
 - Expire: 4 Bytes (timestamp)
 
+<img src="./screenshots/sqlerdiag.png" width="200" height="200">
+
 The reason behind this structure is first of all there are a couple of factors to consider. Although MySQL has a feature whereby it is able to find duplicate primary keys, it does not guarantee concurrency, as such if say there are 2 App Servers making a request to place both similar primary key value into the server, there might be undesired results. To solve this issue, I would propose the use of ZooKeeper to make it a distributed system. However, seeing the scale of this assignment, I believe that this set up is more than enough
 
 For the Primary Key (ShortURL), if a user does not specify an alias, it will generate a random 8 character ShortURL using B62 encoding. A-Z,a-z,0-9. I have also capped the user input for the ShortURL to 10 characters max. The LongURL has a maximum of 2048 character as that is the maximum characters a URL can have. 
@@ -135,8 +137,6 @@ For the Primary Key (ShortURL), if a user does not specify an alias, it will gen
 ### Backend
 
 Run via ```npm run test```
-
-  
 
 Libraries for API testing:
 
