@@ -1,0 +1,30 @@
+.topDiv {
+    display: flex;
+    flex-direction: column;
+    width: 40rem;
+    margin: 0 auto;
+}
+
+h1 {
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+@media (max-width: 40rem) {
+    .topDiv {
+        width: 20rem;
+    }
+}
+
+.smallInfo {
+    font-family: Lato-regular, sans-serif;
+    font-size: 12px;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}

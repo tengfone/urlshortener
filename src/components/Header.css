@@ -1,0 +1,26 @@
+.bg-default{
+    background-color: white;
+}
+
+.nav-link{
+    color: #2699FB !important;
+  }
+
+.navbar-toggler {
+    background-color: #C1C1C1;
+}
+
+.brandName{
+    display: inline-block;
+    align-items: center;
+    margin-left: 1rem;
+    font-family: 'Lato-Bold';
+    color: #007bff !important;
+}
+
+.topDiv{
+    display: flex;
+    flex-direction: column;
+    width: 40rem;
+    margin: 0 auto;
+}

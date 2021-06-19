@@ -2,17 +2,6 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -28,11 +17,38 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.content {
+  margin-top: 60px;
+  padding: 12px;
+}
+
+@font-face {
+  font-family: "Mansalva";
+  src: local("Mansalva"), url(./assets/fonts/Mansalva-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Lato-Bold";
+  src: local("Lato-Bold"), url(./assets/fonts/Lato-Bold.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Lato-Regular";
+  src: local("Lato-Regular"), url(./assets/fonts/Lato-Regular.ttf) format("truetype");
+}
+
+h1 {
+  font-family: Lato-Bold, serif;
+}
+
+p.about {
+  font-family: Lato-Regular, serif;
+}
+
+p a {
+  font-family: Lato-Regular, serif;
+}
+
+* {
+  font-family: Lato-Regular, serif;
 }
