@@ -112,7 +112,17 @@ function Homepage() {
 
     // Copy Function
     const copyToDevice = () => {
-        try {
+        if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
+            toast.warning('❗ Copy Function Does Not Work on http, please copy manually', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        } else {
             navigator.clipboard.writeText(window.location.href + returnData.shortedURL)
             toast.success('📋 Copied To Clipboard', {
                 position: "top-center",
@@ -123,18 +133,6 @@ function Homepage() {
                 draggable: true,
                 progress: undefined,
             });
-        } catch (e) {
-            if (navigator.clipboard.writeText === undefined) {
-                toast.warning('❗ Copy Function Does Not Work on http, please copy manually', {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }
         }
     }
 
