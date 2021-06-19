@@ -21,7 +21,6 @@ function Header() {
                         <Nav.Link href="about">About</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
-
             </Navbar>
         </>
     )

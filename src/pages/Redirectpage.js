@@ -10,11 +10,12 @@ function Redirectpage({ ...props }) {
     const [returnData, setReturnData] = useState({ statusCode: 0, LongURL: '', errorMessage: '' })
     const { ShortURL } = props.match.params
 
+    // OnComponent Immediate Load, Fire API
     useEffect(() => {
         getURL()
     }, [])
 
-    // API
+    // Send a GET request to the API server to check for the alias (ShortURL)
     const url = process.env.REACT_APP_URL_API
     const getURL = () => {
         axios.get(`${url}${ShortURL}`, {
@@ -59,10 +60,12 @@ function Redirectpage({ ...props }) {
         })
     }
 
+    // Redirect to saved Website
     const toRedirected = () => {
         window.location.href = returnData.LongURL
     }
 
+    // If an invalid slug/ShortURL/Alias does not exist, return to HomePage
     const toHomePage = () => {
         setTimeout(function () {
             window.location.href = '/'
@@ -90,7 +93,10 @@ function Redirectpage({ ...props }) {
                     )
                 } else if (returnData.statusCode !== 0) {
                     return (
-                        <p>Server Error</p>
+                        <div>
+                            <p>Server Error</p>
+                            {toRedirected()}
+                        </div>
                     )
                 }
             })()}

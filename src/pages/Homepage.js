@@ -8,12 +8,13 @@ import 'react-toastify/dist/ReactToastify.css';
 const https = require('https');
 
 function Homepage() {
+
     const [form, setForm] = useState({ LongURL: '', ShortURL: '' })
     const [errors, setErrors] = useState({})
     const [toDB, setToDB] = useState({})
     const [returnData, setReturnData] = useState({ statusCode: 0, shortedURL: '', errorMessage: '' })
 
-    // API
+    // POST Request API to store validated data to the API Server
     const url = process.env.REACT_APP_URL_API
     const agent = new https.Agent({
         rejectUnauthorized: false
@@ -25,6 +26,7 @@ function Homepage() {
                 'Content-Type': 'application/json'
             }
         }).then((res) => {
+            // Success Status 200 denotes LongURL found
             if (res.status === 200) {
                 setReturnData({
                     ...returnData,
@@ -41,6 +43,7 @@ function Homepage() {
                     progress: undefined,
                 });
             } else {
+                // Success Status General
                 setReturnData({
                     ...returnData,
                     statusCode: 1,
@@ -58,6 +61,7 @@ function Homepage() {
             }
         }).catch(function (error) {
             if (error.response) {
+                // Error Code 520 denotes Duplicated Key/Alias/ShortURL Exist
                 if (error.response.status === 520) {
                     setReturnData({
                         ...returnData,
@@ -73,6 +77,7 @@ function Homepage() {
                         progress: undefined,
                     });
                 } else {
+                    // General Error with Response
                     setReturnData({
                         ...returnData,
                         statusCode: 1,
@@ -89,6 +94,7 @@ function Homepage() {
                     });
                 }
             } else {
+                // SQL Server General Issues
                 setReturnData({
                     ...returnData,
                     statusCode: 2,
@@ -110,7 +116,7 @@ function Homepage() {
         })
     }
 
-    // Copy Function
+    // Copy Function - Copy to Clipboard only works on localhost or HTTPS
     const copyToDevice = () => {
         if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
             toast.warning('❗ Copy Function Does Not Work on http, please copy manually', {
@@ -136,7 +142,7 @@ function Homepage() {
         }
     }
 
-    // Form Validation
+    // Form Validation using REGEX
     const findFormErrors = () => {
         const { ShortURL, LongURL } = form
         const newErrors = {}
@@ -167,6 +173,7 @@ function Homepage() {
         return newErrors
     }
 
+    // Helper Function to check if an Object is empty
     function isEmpty(obj) {
         for (var key in obj) {
             if (obj.hasOwnProperty(key))
@@ -175,6 +182,7 @@ function Homepage() {
         return true;
     }
 
+    // OnComponentMount, once the state of toDB changes, the API is being fired. Prevent double rendering.
     useEffect(() => {
         if (!isEmpty(toDB)) {
             setToDB(toDB => ({ ...toDB }))
@@ -184,6 +192,7 @@ function Homepage() {
         }
     }, [toDB.LongURL])
 
+    // Submitting of Form
     const handleSubmit = (e) => {
         e.preventDefault()
         const newErrors = findFormErrors()
@@ -193,20 +202,20 @@ function Homepage() {
             // REGEX Successful
 
             let { ShortURL, LongURL } = form
-            // const TimeCreated = Date.now()
             const TimeCreated = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
 
-            // If Short URL Empty, Generate a B62 Encoder
+            // If Short URL Empty, Randomly Generate 8 Characters using B62 Encoder
             if (!ShortURL) {
                 var base62 = require('base62-random');
                 ShortURL = base62(8);
             }
 
+            // Ensure that HTTP is being added before sending to SQL server to allow it to be recognize as a HTML
             if (!LongURL.match(/^https?:\/\/(.*)/)) {
                 LongURL = "http://" + LongURL
             }
 
-            // 30 days expiry
+            // 30 days expiry: to be implemented
             let TimeExpire = moment().add(30, 'days')
             TimeExpire = TimeExpire.format('YYYY-MM-DD HH:mm:ss')
 
@@ -219,7 +228,7 @@ function Homepage() {
 
             setToDB(newToDB)
 
-            // Clear All Boxes
+            // Clear All Boxes, States are being cleared in UseEffect.
             e.target.reset();
         }
     }
