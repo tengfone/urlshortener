@@ -85,7 +85,9 @@ TimeExpire timestamp NOT NULL
 ```
 ## Preview
 
-Update when CSS is final
+*Might Update Again when CSS is final
+
+![preview](./screenshots/demo.gif)
 
 ## FrontEnd
 The front end is written using ReactJS [here](https://github.com/tengfone/urlshortener) and certain libraries which can be found [here](https://github.com/tengfone/urlshortener/blob/main/package.json). 
@@ -128,7 +130,7 @@ Using a relational database, I have chosen MySQL as I am alittle more familiar w
 
 <img src="./screenshots/sqlerdiag.png" width="200" height="200">
 
-If this application is amounting to high traffic, I would propose the use of ZooKeeper to make it a distributed system. However, seeing the scale of this assignment, I believe that this set up is more than enough
+If this application is required to scale to high traffic, I would propose the use of ZooKeeper to make it a distributed system. However, seeing the scale of this assignment, I believe that this set up is more than enough
 
 For the Primary Key (ShortURL), if a user does not specify an alias, it will generate a random 8 character ShortURL using B62 encoding. A-Z,a-z,0-9. I have also capped the user input for the ShortURL to 10 characters max. The LongURL has a maximum of 2048 character as that is the maximum characters a URL can have. 
 
