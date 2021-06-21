@@ -32,13 +32,13 @@ Run either via Cloud or Locally
 3.  Store the converted URL in a relational database (of your choice)
 
 ## System Design
-Before starting the assignment, I had planned to do it in this way (refer to image below).
+Before starting the assignment, the initial plan was to host the front end on a commericall serverless site like Vercel / Heroku.
 
-However, it was an issue as I met with plenty of security protocol issues such as invalid certification signing as there was a difference in my backend server running in HTTP and the web deployed sites (Heroku/Vercel) using HTTPS. 
+However, it poses to be a problem when I met with plenty of security protocol issues such as invalid certification signing as there was a difference in my backend server running in HTTP and the web deployed sites (Heroku/Vercel) using HTTPS. 
 
 The reason why I wanted to use Heroku and Vercel was because they provide a nice looking URL link eg microurl.vercel.app/microurl.heroku.app etc and also it has CI/CD deployment, after a push to the Github everything is done and automated for me.
 
-However after much struggle due to time constraints, I have decided to serve this entire assignment on a single AWS EC2 small Ubuntu 20.x. The SQL server will be listening on port 3306, the front end will be running via NGINX port 80 and the backend API server will be on port 3001. 
+Therefore I have decided to serve this entire assignment on a single AWS EC2 small Ubuntu 20.x. The SQL server will be listening on port 3306, the front end will be running via NGINX port 80 and the backend API server will be on port 3001. 
 
 <img src="./screenshots/archdesign.jpg" width="700" height="400">
 
@@ -128,7 +128,7 @@ Using a relational database, I have chosen MySQL as I am alittle more familiar w
 
 <img src="./screenshots/sqlerdiag.png" width="200" height="200">
 
-The reason behind this structure is first of all there are a couple of factors to consider. Although MySQL has a feature whereby it is able to find duplicate primary keys, it does not guarantee concurrency, as such if say there are 2 App Servers making a request to place both similar primary key value into the server, there might be undesired results. To solve this issue, I would propose the use of ZooKeeper to make it a distributed system. However, seeing the scale of this assignment, I believe that this set up is more than enough
+If this application is amounting to high traffic, I would propose the use of ZooKeeper to make it a distributed system. However, seeing the scale of this assignment, I believe that this set up is more than enough
 
 For the Primary Key (ShortURL), if a user does not specify an alias, it will generate a random 8 character ShortURL using B62 encoding. A-Z,a-z,0-9. I have also capped the user input for the ShortURL to 10 characters max. The LongURL has a maximum of 2048 character as that is the maximum characters a URL can have. 
 
@@ -163,7 +163,6 @@ There are a total of 4 test cases.
 | Test Case # | Description | Test Scenario | Test Steps | Test Data | Expected Results | Actual Results | Pass / Fail |
 |-|:-:|-|-|-|-|-|-|
 | 1 | Search if alias correspond to longURL found in MySQL | Ensure that there is a slug/alias inside the DB called test mapped to a full URL. Valid if it returns a status code of 200 | 1. Ensure there is a mappable key pair value in the DB 2. Send a GET request with the key parameter | ShortURL=test | Status code 200 | Status code 200 | Pass |
-## Summary
-Something new I took back was the SSL issues with both front end and backend. For the front end, if the application is not running on a HTTPS server, you are not allowed to use the inbuild Javascript functions like copying to clipboard and you cannot call an API request whist the certificate is not valid. On the backend, you can manually self-sign the certificate but it seems like majority of the browser are able to detect that and prevent any connection to your backend server. 
+## Features to be improved on
 
-Features that can be improved on but not implemented. The MySQL have a field known as TimeExpire that expires 30 days after the URL has been created. A script can be written or even done on the client side when searching for the ShortURL slug. 
+Features that can be improved on but not implemented here. The MySQL have a field known as TimeExpire that expires 30 days after the URL has been created. A script can be written or even done on the client side when searching for the ShortURL slug. 
