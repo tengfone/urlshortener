@@ -146,8 +146,9 @@ function Homepage() {
     const findFormErrors = () => {
         const { ShortURL, LongURL } = form
         const newErrors = {}
+        let validIPURL = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?(?:(?:2[0-4]\d|25[0-5]|1\d{2}|[1-9]?\d)\.){3}(?:2[0-4]\d|25[0-5]|1\d{2}|[1-9]?\d)(?:\:(?:\d|[1-9]\d{1,3}|[1-5]\d{4}|6[0-4]\d{3}|65[0-4]\d{2}|655[0-2]\d|6553[0-5]))?$/
         let validLongURL = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
-        let validShortURL = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
+        let validShortURL = /^[a-zA-Z0-9]+(?:-[A-Za-z0-9]+)*$/
 
         // LongURL
         if (!LongURL || LongURL === '') {
@@ -156,7 +157,7 @@ function Homepage() {
         else if (LongURL.length > 2048) {
             newErrors.LongURL = "Cannot be more than 2048 Characters"
         }
-        else if (!LongURL.match(validLongURL)) {
+        else if (!LongURL.match(validLongURL) && !LongURL.match(validIPURL)) {
             newErrors.LongURL = "URL Error, Please check if valid URL"
         }
 
