@@ -58,22 +58,63 @@ Please ensure that you have a ```.env``` file located at the root directory that
 REACT_APP_URL_API=YOURBACKENDAPIHERE
 ```
 Then you can ```npm run start``` to start the frontend server.
+
+
 ### Backend
-Either on local or cloud
+
+Either launch on Cloud or Local. As this project is developed on the cloud, please follow the cloud instructions on setting up. I have written a bash script for the backend portion to automate the entire process from installing the SQL server to setting permissions and loading in the SQL scripts.
+
+## Cloud:  
+
+Prerequisite:  
+- AWS Instance  
+
+Steps:
+
+Launch an EC2 Instance ```Ubuntu Server 20.04 LTS (HVM), SSD Volume Type - ami-09e67e426f25ce0d7 (64-bit x86)``` (Tested on T2.Small)  
+
+Change Security Group in AWS Security Wizard to open all TCP Port to anywhere (Please change accordingly to your default params - MySQL port and your IP SSH address)
+
+SSH into your AWS server by  
 ```
+ssh -i <SSH_KEY_PATH> ubuntu@<YOUR_EC2_PUBLIC_IP>
+```
+
+Clone repo and run bash script (Please edit required passwords in bash script):
+```
+
 git clone https://github.com/tengfone/urlshortener_be
+
 cd urlshortener_be
-npm install
+
+chmod +x start.sh
+
+sudo ./start.sh
 ```
+
+The whole process will take about 3 minutes. Once completed, visit ```AWS_IP_ADDRESS:3001``` on your web browser and you will see a ```message:welcome``` indicating everything is working.  
+
+## Local:  
+Have not tested this locally.
+
 Please ensure that you have a ```.env``` file located at the root directory that consist of the following params:
+
 ```
 HOST=YOURDBHOSTURL
+
 USER=YOURDBUSER
+
 PASSWORD=YOURDBPASSWORD
+
 DB=YOURDBNAME
+
 PORT=3306
 ```
+
 Then you can ```node server.js``` to start the backend server.
+
+Please note that you are required to have MySQL server v8 to be installed on the local computer.
+
 
 ### MySQL
 Ensure you have one user with permission to write on the database. Create a database with the following table called ```url```. The commands are as follows:
