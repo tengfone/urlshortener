@@ -1,5 +1,8 @@
 # MicroURL 🔗
-## [Demo](http://18.209.180.216)
+## <s>Demo</s> (Removed, server shut down)
+
+Please refer to Preview.
+
 ##### Shorten a URL 
 ##### GovTech Takehome Assignment 
 
