@@ -1,5 +1,6 @@
 # MicroURL 🔗
-## <s>Demo</s> (Removed, server shut down)
+
+## This is ported over to FireBase(FireStore). I did this so as to make the app self sustaining (Free) instead of using a structured DB.
 
 Please refer to Preview.
 
