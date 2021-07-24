@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { Spinner } from 'react-bootstrap'
 import './Redirectpage.css'
+import firebase from '../firebase.js'
 require('dotenv').config()
 
 function Redirectpage({ ...props }) {
@@ -15,49 +16,31 @@ function Redirectpage({ ...props }) {
         getURL()
     }, [])
 
-    // Send a GET request to the API server to check for the alias (ShortURL)
-    const url = process.env.REACT_APP_URL_API
     const getURL = () => {
-        axios.get(`${url}${ShortURL}`, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then((res) => {
-            if (res.status === 200) {
+        let urlRef = firebase.firestore().collection("urls")
+        urlRef.doc(`${ShortURL}`).get().then((doc) => {
+            if (doc.exists) {
+                // Success!
                 setReturnData({
                     ...returnData,
-                    statusCode: res.status,
-                    LongURL: res.data.LongURL
+                    statusCode: 200,
+                    LongURL: doc.data().LongURL
                 })
             } else {
+                // No such URL
                 setReturnData({
                     ...returnData,
-                    statusCode: 1,
-                    errorMessage: res
+                    statusCode: 404,
+                    errorMessage: "No Such Alias"
                 })
             }
-        }).catch(function (error) {
-            if (error.response) {
-                if (error.response.status === 404) {
-                    setReturnData({
-                        ...returnData,
-                        statusCode: error.response.status
-                    })
-                } else {
-                    setReturnData({
-                        ...returnData,
-                        statusCode: 1,
-                        errorMessage: error.response
-                    })
-                }
-            } else {
-                setReturnData({
-                    ...returnData,
-                    statusCode: 2,
-                    errorMessage: 'Error Connecting to SQL'
-                })
-            }
-        })
+        }).catch((error) => {
+            setReturnData({
+                ...returnData,
+                statusCode: 1,
+                errorMessage: error
+            })
+        });
     }
 
     // Redirect to saved Website

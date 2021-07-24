@@ -5,6 +5,7 @@ import moment from 'moment';
 import './Homepage.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import firebase from '../firebase.js'
 const https = require('https');
 
 function Homepage() {
@@ -14,94 +15,69 @@ function Homepage() {
     const [toDB, setToDB] = useState({})
     const [returnData, setReturnData] = useState({ statusCode: 0, shortedURL: '', errorMessage: '' })
 
-    // POST Request API to store validated data to the API Server
-    const url = process.env.REACT_APP_URL_API
-    const agent = new https.Agent({
-        rejectUnauthorized: false
-    });
-    const postURL = () => {
-        axios.post(`${url}url`, toDB, {
-            agent: agent,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then((res) => {
-            // Success Status 200 denotes LongURL found
-            if (res.status === 200) {
-                setReturnData({
-                    ...returnData,
-                    statusCode: res.status,
-                    shortedURL: res.data.ShortURL
-                })
-                toast.success('🎉 Success', {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            } else {
-                // Success Status General
-                setReturnData({
-                    ...returnData,
-                    statusCode: 1,
-                    errorMessage: res
-                })
-                toast.error('❗ Error', {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }
-        }).catch(function (error) {
-            if (error.response) {
-                // Error Code 520 denotes Duplicated Key/Alias/ShortURL Exist
-                if (error.response.status === 520) {
-                    setReturnData({
-                        ...returnData,
-                        statusCode: error.response.status
-                    })
-                    toast.warning('❗ Whoops Alias Exists', {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
+    const postURLtoFirebase = () => {
+        let urlRef = firebase.firestore().collection("urls")
+        urlRef.doc(`${toDB.ShortURL}`).get()
+            .then((docSnapshot) => {
+                if (docSnapshot.exists) {
+                    urlRef.onSnapshot((doc) => {
+                        // This URL Already Existed
+                        setReturnData({
+                            ...returnData,
+                            statusCode: 520
+                        })
+                        toast.warning('❗ Whoops Alias Exists', {
+                            position: "top-center",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
                     });
                 } else {
-                    // General Error with Response
-                    setReturnData({
-                        ...returnData,
-                        statusCode: 1,
-                        errorMessage: error.response
-                    })
-                    toast.error('❗ Error', {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
+                    // Create A New Field in FireStore
+                    urlRef.doc(`${toDB.ShortURL}`).set({
+                        ShortURL: `${toDB.ShortURL}`,
+                        LongURL: `${toDB.LongURL}`,
+                        TimeCreated: `${toDB.TimeCreated}`,
+                        TimeExpire: `${toDB.TimeExpire}`
+                    }).then(() => {
+                        // Successful!
+                        setReturnData({
+                            ...returnData,
+                            statusCode: 200,
+                            shortedURL: toDB.ShortURL
+                        })
+                        toast.success('🎉 Success', {
+                            position: "top-center",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
+                    }).catch((error) => {
+                        // Error
+                        setReturnData({
+                            ...returnData,
+                            statusCode: 1,
+                            errorMessage: error
+                        })
+                        toast.error('❗ Error', {
+                            position: "top-center",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
                     });
                 }
-            } else {
-                // SQL Server General Issues
-                setReturnData({
-                    ...returnData,
-                    statusCode: 2,
-                    errorMessage: 'Error Connecting to SQL'
-                })
-            }
-        })
+            });
     }
 
     // Handle Inputs
@@ -187,7 +163,7 @@ function Homepage() {
     useEffect(() => {
         if (!isEmpty(toDB)) {
             setToDB(toDB => ({ ...toDB }))
-            postURL()
+            postURLtoFirebase()
             setForm({ LongURL: '', ShortURL: '' })
             setErrors(() => ({}))
         }
