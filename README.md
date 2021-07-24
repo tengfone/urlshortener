@@ -1,8 +1,21 @@
 # MicroURL 🔗
-## <s>Demo</s> (Removed, server shut down)
+# UPDATE:
 
-Please refer to Preview.
+I guess I did not manage to pass this GDS assessement round as no one contacted me :(
 
+Since I have done this project from ground up. It does not make sense to abandon this project. 
+
+Therefore, I have ported this application to use a No-SQL (Firebase - Google) database and hosted the web app on Vercel because both are free. 
+
+For the updated codes for Firebase refer [here](https://github.com/tengfone/urlshortener/tree/deploy)
+
+And the 
+
+## New Demo
+
+[![](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)](https://tf-urlshortener.vercel.app/)
+
+---
 ##### Shorten a URL 
 ##### GovTech Takehome Assignment 
 
